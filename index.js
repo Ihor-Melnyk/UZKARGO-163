@@ -50,7 +50,6 @@ function onSearchBranch(searchRequest) {
   });
 }
 
-//
 function onCardInitialize() {
   EnterResultsTask();
   RegisterSpesificationTask();
@@ -61,42 +60,40 @@ function onCardInitialize() {
 function EnterResultsTask() {
   debugger;
   var stateTask = EdocsApi.getCaseTaskDataByCode("EnterResults").state;
-
-  switch (stateTask) {
-    case "assigned" || "inProgress" || "delegated":
-      setPropertyRequired("SpesificationResult");
-      setPropertyRequired("NumberProtocol");
-      setPropertyRequired("DateProtocol");
-      setPropertyHidden("SpesificationResult", false);
-      setPropertyHidden("NumberProtocol", false);
-      setPropertyHidden("DateProtocol", false);
-      setPropertyDisabled("SpesificationResult", false);
-      setPropertyDisabled("NumberProtocol", false);
-      setPropertyDisabled("DateProtocol", false);
-      break;
-
-    case "completed":
-      setPropertyRequired("SpesificationResult");
-      setPropertyRequired("NumberProtocol");
-      setPropertyRequired("DateProtocol");
-      setPropertyHidden("SpesificationResult", false);
-      setPropertyHidden("NumberProtocol", false);
-      setPropertyHidden("DateProtocol", false);
-      setPropertyDisabled("SpesificationResult");
-      setPropertyDisabled("NumberProtocol");
-      setPropertyDisabled("DateProtocol");
-
-    default:
-      setPropertyRequired("SpesificationResult", false);
-      setPropertyRequired("NumberProtocol", false);
-      setPropertyRequired("DateProtocol", false);
-      setPropertyHidden("SpesificationResult");
-      setPropertyHidden("NumberProtocol");
-      setPropertyHidden("DateProtocol");
-      setPropertyDisabled("SpesificationResult", false);
-      setPropertyDisabled("NumberProtocol", false);
-      setPropertyDisabled("DateProtocol", false);
-      break;
+  if (
+    stateTask == "assigned" ||
+    stateTask == "inProgress" ||
+    stateTask == "delegated"
+  ) {
+    setPropertyRequired("SpesificationResult");
+    setPropertyRequired("NumberProtocol");
+    setPropertyRequired("DateProtocol");
+    setPropertyHidden("SpesificationResult", false);
+    setPropertyHidden("NumberProtocol", false);
+    setPropertyHidden("DateProtocol", false);
+    setPropertyDisabled("SpesificationResult", false);
+    setPropertyDisabled("NumberProtocol", false);
+    setPropertyDisabled("DateProtocol", false);
+  } else if (stateTask == "completed") {
+    setPropertyRequired("SpesificationResult");
+    setPropertyRequired("NumberProtocol");
+    setPropertyRequired("DateProtocol");
+    setPropertyHidden("SpesificationResult", false);
+    setPropertyHidden("NumberProtocol", false);
+    setPropertyHidden("DateProtocol", false);
+    setPropertyDisabled("SpesificationResult");
+    setPropertyDisabled("NumberProtocol");
+    setPropertyDisabled("DateProtocol");
+  } else {
+    setPropertyRequired("SpesificationResult", false);
+    setPropertyRequired("NumberProtocol", false);
+    setPropertyRequired("DateProtocol", false);
+    setPropertyHidden("SpesificationResult");
+    setPropertyHidden("NumberProtocol");
+    setPropertyHidden("DateProtocol");
+    setPropertyDisabled("SpesificationResult", false);
+    setPropertyDisabled("NumberProtocol", false);
+    setPropertyDisabled("DateProtocol", false);
   }
 }
 
@@ -116,42 +113,40 @@ function onTaskExecuteEnterResults(routeStage) {
 function RegisterSpesificationTask() {
   debugger;
   var stateTask = EdocsApi.getCaseTaskDataByCode("RegisterSpesification").state;
-
-  switch (stateTask) {
-    case "assigned" || "inProgress" || "delegated":
-      setPropertyRequired("RegDate");
-      setPropertyRequired("RegNumber");
-      setPropertyRequired("Registraion");
-      setPropertyHidden("RegDate", false);
-      setPropertyHidden("RegNumber", false);
-      setPropertyHidden("Registraion", false);
-      setPropertyDisabled("RegDate", false);
-      setPropertyDisabled("RegNumber", false);
-      setPropertyDisabled("Registraion", false);
-      break;
-
-    case "completed":
-      setPropertyRequired("RegDate");
-      setPropertyRequired("RegNumber");
-      setPropertyRequired("Registraion");
-      setPropertyHidden("RegDate", false);
-      setPropertyHidden("RegNumber", false);
-      setPropertyHidden("Registraion", false);
-      setPropertyDisabled("RegDate");
-      setPropertyDisabled("RegNumber");
-      setPropertyDisabled("Registraion");
-
-    default:
-      setPropertyRequired("RegDate", false);
-      setPropertyRequired("RegNumber", false);
-      setPropertyRequired("Registraion", false);
-      setPropertyHidden("RegDate");
-      setPropertyHidden("RegNumber");
-      setPropertyHidden("Registraion");
-      setPropertyDisabled("RegDate", false);
-      setPropertyDisabled("RegNumber", false);
-      setPropertyDisabled("Registraion", false);
-      break;
+  if (
+    stateTask == "assigned" ||
+    stateTask == "inProgress" ||
+    stateTask == "delegated"
+  ) {
+    setPropertyRequired("RegDate");
+    setPropertyRequired("RegNumber");
+    setPropertyRequired("Registraion");
+    setPropertyHidden("RegDate", false);
+    setPropertyHidden("RegNumber", false);
+    setPropertyHidden("Registraion", false);
+    setPropertyDisabled("RegDate", false);
+    setPropertyDisabled("RegNumber", false);
+    setPropertyDisabled("Registraion", false);
+  } else if (stateTask == "completed") {
+    setPropertyRequired("RegDate");
+    setPropertyRequired("RegNumber");
+    setPropertyRequired("Registraion");
+    setPropertyHidden("RegDate", false);
+    setPropertyHidden("RegNumber", false);
+    setPropertyHidden("Registraion", false);
+    setPropertyDisabled("RegDate");
+    setPropertyDisabled("RegNumber");
+    setPropertyDisabled("Registraion");
+  } else {
+    setPropertyRequired("RegDate", false);
+    setPropertyRequired("RegNumber", false);
+    setPropertyRequired("Registraion", false);
+    setPropertyHidden("RegDate");
+    setPropertyHidden("RegNumber");
+    setPropertyHidden("Registraion");
+    setPropertyDisabled("RegDate", false);
+    setPropertyDisabled("RegNumber", false);
+    setPropertyDisabled("Registraion", false);
   }
 }
 
@@ -172,25 +167,24 @@ function MakeDatePaymentTask() {
   debugger;
   var stateTask = EdocsApi.getCaseTaskDataByCode(
     "MakeDatePayment" + EdocsApi.getAttributeValue("Sections").value
-  ).state;
+  )?.state;
 
-  switch (stateTask) {
-    case "assigned" || "inProgress" || "delegated":
-      setPropertyRequired("PaymentOption");
-      setPropertyHidden("PaymentOption", false);
-      setPropertyDisabled("PaymentOption", false);
-      break;
-
-    case "completed":
-      setPropertyRequired("PaymentOption");
-      setPropertyHidden("PaymentOption", false);
-      setPropertyDisabled("PaymentOption");
-
-    default:
-      setPropertyRequired("PaymentOption", false);
-      setPropertyHidden("PaymentOption");
-      setPropertyDisabled("PaymentOption", false);
-      break;
+  if (
+    stateTask == "assigned" ||
+    stateTask == "inProgress" ||
+    stateTask == "delegated"
+  ) {
+    setPropertyRequired("PaymentOption");
+    setPropertyHidden("PaymentOption", false);
+    setPropertyDisabled("PaymentOption", false);
+  } else if (stateTask == "completed") {
+    setPropertyRequired("PaymentOption");
+    setPropertyHidden("PaymentOption", false);
+    setPropertyDisabled("PaymentOption");
+  } else {
+    setPropertyRequired("PaymentOption", false);
+    setPropertyHidden("PaymentOption");
+    setPropertyDisabled("PaymentOption", false);
   }
 }
 
@@ -207,25 +201,24 @@ function ReceiptFundsTask() {
   debugger;
   var stateTask = EdocsApi.getCaseTaskDataByCode(
     "ReceiptFunds" + EdocsApi.getAttributeValue("Sections").value
-  ).state;
+  )?.state;
 
-  switch (stateTask) {
-    case "assigned" || "inProgress" || "delegated":
-      setPropertyRequired("InvoiceStatus");
-      setPropertyHidden("InvoiceStatus", false);
-      setPropertyDisabled("InvoiceStatus", false);
-      break;
-
-    case "completed":
-      setPropertyRequired("InvoiceStatus");
-      setPropertyHidden("InvoiceStatus", false);
-      setPropertyDisabled("InvoiceStatus");
-
-    default:
-      setPropertyRequired("InvoiceStatus", false);
-      setPropertyHidden("InvoiceStatus");
-      setPropertyDisabled("InvoiceStatus", false);
-      break;
+  if (
+    stateTask == "assigned" ||
+    stateTask == "inProgress" ||
+    stateTask == "delegated"
+  ) {
+    setPropertyRequired("InvoiceStatus");
+    setPropertyHidden("InvoiceStatus", false);
+    setPropertyDisabled("InvoiceStatus", false);
+  } else if (stateTask == "completed") {
+    setPropertyRequired("InvoiceStatus");
+    setPropertyHidden("InvoiceStatus", false);
+    setPropertyDisabled("InvoiceStatus");
+  } else {
+    setPropertyRequired("InvoiceStatus", false);
+    setPropertyHidden("InvoiceStatus");
+    setPropertyDisabled("InvoiceStatus", false);
   }
 }
 
@@ -253,4 +246,116 @@ function setSections() {
 
 function onChangeBranch() {
   setSections();
+}
+
+function onBeforeCardSave() {
+  setSections();
+}
+//Скрипт 6. Передача ТУ для ознайомлення  в зовнішню систему
+function setDataForESIGN() {
+  debugger;
+  var registrationDate = EdocsApi.getAttributeValue("RegDate").value;
+  var registrationNumber = EdocsApi.getAttributeValue("RegNumber").value;
+  var caseType = EdocsApi.getAttributeValue("DocType").value;
+  var caseKind = EdocsApi.getAttributeValue("DocKind").text;
+  var name = "";
+  if (caseKind) {
+    name += caseKind;
+  } else {
+    name += caseType;
+  }
+  name +=
+    " №" +
+    (registrationNumber ? registrationNumber : CurrentDocument.id) +
+    (!registrationDate
+      ? ""
+      : " від " + moment(registrationDate).format("DD.MM.YYYY"));
+  doc = {
+    DocName: name,
+    extSysDocId: CurrentDocument.id,
+    ExtSysDocVersion: CurrentDocument.version,
+    docType: "Spesification",
+    docDate: registrationDate,
+    docNum: registrationNumber,
+    File: "",
+    parties: [
+      {
+        taskType: "ToSign",
+        taskState: "Done",
+        legalEntityCode: EdocsApi.getAttributeValue("OrgCode").value,
+        contactPersonEmail: EdocsApi.getAttributeValue("OrgRPEmail").value,
+        signatures: [],
+      },
+      {
+        taskType: "ToRead",
+        taskState: "NotAssigned",
+        legalEntityCode: EdocsApi.getAttributeValue("ContractorCode").value,
+        contactPersonEmail:
+          EdocsApi.getAttributeValue("ContractorRPEmail").value,
+        expectedSignatures: [],
+      },
+    ],
+    additionalAttributes: [
+      {
+        code: "docDate",
+        type: "dateTime",
+        value: registrationDate,
+      },
+      {
+        code: "docNum",
+        type: "string",
+        value: registrationNumber,
+      },
+    ],
+    sendingSettings: {
+      attachFiles: "fixed", //, можна також встановлювати 'firstOnly' - Лише файл із першої зафіксованої вкладки(Головний файл), або 'all' - всі файли, 'fixed' - усі зафіксовані
+      attachSignatures: "signatureAndStamp", // -'signatureAndStamp'Типи “Підпис” або “Печатка”, можна також встановити 'all' - усі типи цифрових підписів
+    },
+  };
+  EdocsApi.setAttributeValue({ code: "JSON", value: JSON.stringify(doc) });
+}
+
+function onTaskExecuteSendOutDoc(routeStage) {
+  debugger;
+  if (routeStage.executionResult == "rejected") {
+    return;
+  }
+  setDataForESIGN();
+  var idnumber = EdocsApi.getAttributeValue("DocId");
+  var methodData = {
+    extSysDocId: idnumber.value,
+  };
+
+  routeStage.externalAPIExecutingParams = {
+    externalSystemCode: "ESIGN1", // код зовнішньої системи
+    externalSystemMethod: "integration/importDoc", // метод зовнішньої системи
+    data: methodData, // дані, що очікує зовнішня система для заданого методу
+    executeAsync: true, // виконувати завдання асинхронно
+  };
+}
+
+function onTaskCommentedSendOutDoc(caseTaskComment) {
+  debugger;
+  var orgCode = EdocsApi.getAttributeValue("OrgCode").value;
+  var orgShortName = EdocsApi.getAttributeValue("OrgShortName").value;
+  if (!orgCode || !orgShortName) {
+    return;
+  }
+  var idnumber = EdocsApi.getAttributeValue("DocId");
+  var methodData = {
+    extSysDocId: idnumber.value,
+    eventType: "CommentAdded",
+    comment: caseTaskComment.comment,
+    partyCode: orgCode,
+    userTitle: CurrentUser.name,
+    partyName: orgShortName,
+    occuredAt: new Date(),
+  };
+
+  caseTaskComment.externalAPIExecutingParams = {
+    externalSystemCode: "ESIGN1", // код зовнішньої системи
+    externalSystemMethod: "integration/processEvent", // метод зовнішньої системи
+    data: methodData, // дані, що очікує зовнішня система для заданого методу
+    executeAsync: true, // виконувати завдання асинхронно
+  };
 }
