@@ -13,7 +13,8 @@ function setPropertyHidden(attributeName, boolValue = true) {
 }
 
 function setPropertyDisabled(attributeName, boolValue = true) {
-  //недоступне
+  //недоступнеf
+  debugger;
   var attributeProps = EdocsApi.getControlProperties(attributeName);
   attributeProps.disabled = boolValue;
   EdocsApi.setControlProperties(attributeProps);
@@ -33,14 +34,14 @@ function onCreate() {
       .email,
     text: null,
   });
-  EdocsApi.setAttributeValue({
-    code: "Branch",
-    value: EdocsApi.getOrgUnitDataByUnitID(
-      EdocsApi.getEmployeeDataByEmployeeID(CurrentDocument.initiatorId).unitId,
-      1
-    ).unitId,
-    text: null,
-  });
+  // EdocsApi.setAttributeValue({
+  //   code: "Branch",
+  //   value: EdocsApi.getOrgUnitDataByUnitID(
+  //     EdocsApi.getEmployeeDataByEmployeeID(CurrentDocument.initiatorId).unitId,
+  //     1
+  //   ).unitId,
+  //   text: null,
+  // });
 }
 
 function onSearchBranch(searchRequest) {
@@ -53,7 +54,7 @@ function onSearchBranch(searchRequest) {
 function onCardInitialize() {
   EnterResultsTask();
   RegisterSpesificationTask();
-  MakeDatePaymentTask();
+  //MakeDatePaymentTask();
   ReceiptFundsTask();
 }
 //Скрипт 2. Зміна властивостей атрибутів
@@ -110,6 +111,12 @@ function onTaskExecuteEnterResults(routeStage) {
 }
 
 //Скрипт 3. Зміна властивостей атрибутів
+function onTaskExecuteAddProtocol(routeStage) {
+  debugger;
+  if (routeStage.executionResult == "executed") {
+    RegisterSpesificationTask();
+  }
+}
 function RegisterSpesificationTask() {
   debugger;
   var stateTask = EdocsApi.getCaseTaskDataByCode("RegisterSpesification").state;
@@ -163,30 +170,30 @@ function onTaskExecuteRegisterSpesification(routeStage) {
 }
 
 //Скрипт 4. Зміна властивостей атрибутів
-function MakeDatePaymentTask() {
-  debugger;
-  var stateTask = EdocsApi.getCaseTaskDataByCode(
-    "MakeDatePayment" + EdocsApi.getAttributeValue("Sections").value
-  )?.state;
+//function MakeDatePaymentTask() {
+// debugger;
+// var stateTask = EdocsApi.getCaseTaskDataByCode(
+// "MakeDatePayment" + EdocsApi.getAttributeValue("Sections").value
+//)?.state;
 
-  if (
-    stateTask == "assigned" ||
-    stateTask == "inProgress" ||
-    stateTask == "delegated"
-  ) {
-    setPropertyRequired("PaymentOption");
-    setPropertyHidden("PaymentOption", false);
-    setPropertyDisabled("PaymentOption", false);
-  } else if (stateTask == "completed") {
-    setPropertyRequired("PaymentOption");
-    setPropertyHidden("PaymentOption", false);
-    setPropertyDisabled("PaymentOption");
-  } else {
-    setPropertyRequired("PaymentOption", false);
-    setPropertyHidden("PaymentOption");
-    setPropertyDisabled("PaymentOption", false);
-  }
-}
+//if (
+// stateTask == "assigned" ||
+//stateTask == "inProgress" ||
+//stateTask == "delegated"
+//) {
+// setPropertyRequired("PaymentOption");
+// setPropertyHidden("PaymentOption", false);
+// setPropertyDisabled("PaymentOption", false);
+// } else if (stateTask == "completed") {
+// setPropertyRequired("PaymentOption");
+// setPropertyHidden("PaymentOption", false);
+//setPropertyDisabled("PaymentOption");
+//} else {
+// setPropertyRequired("PaymentOption", false);
+// setPropertyHidden("PaymentOption");
+// setPropertyDisabled("PaymentOption", false);
+//}
+//}
 
 function onTaskExecuteRegisterAct(routeStage) {
   debugger;
@@ -208,24 +215,24 @@ function ReceiptFundsTask() {
     stateTask == "inProgress" ||
     stateTask == "delegated"
   ) {
-    setPropertyRequired("InvoiceStatus");
-    setPropertyHidden("InvoiceStatus", false);
-    setPropertyDisabled("InvoiceStatus", false);
+    setPropertyRequired("StatusIn");
+    setPropertyHidden("StatusIn", false);
+    setPropertyDisabled("StatusIn", false);
   } else if (stateTask == "completed") {
-    setPropertyRequired("InvoiceStatus");
-    setPropertyHidden("InvoiceStatus", false);
-    setPropertyDisabled("InvoiceStatus");
+    setPropertyRequired("StatusIn");
+    setPropertyHidden("StatusIn", false);
+    setPropertyDisabled("StatusIn");
   } else {
-    setPropertyRequired("InvoiceStatus", false);
-    setPropertyHidden("InvoiceStatus");
-    setPropertyDisabled("InvoiceStatus", false);
+    setPropertyRequired("StatusIn", false);
+    setPropertyHidden("StatusIn");
+    setPropertyDisabled("StatusIn", false);
   }
 }
 
 function onTaskExecuteReceiptFunds(routeStage) {
   debugger;
   if (routeStage.executionResult == "executed") {
-    if (!EdocsApi.getAttributeValue("InvoiceStatus").value)
+    if (!EdocsApi.getAttributeValue("StatusIn").value)
       throw `Внесіть значення в поле "Статус оплати Замовником"`;
   }
 }
@@ -274,7 +281,7 @@ function setDataForESIGN() {
     DocName: name,
     extSysDocId: CurrentDocument.id,
     ExtSysDocVersion: CurrentDocument.version,
-    docType: "Spesification",
+    docType: "SpecificationsCommission",
     docDate: registrationDate,
     docNum: registrationNumber,
     File: "",
@@ -308,7 +315,7 @@ function setDataForESIGN() {
       },
     ],
     sendingSettings: {
-      attachFiles: "fixed", //, можна також встановлювати 'firstOnly' - Лише файл із першої зафіксованої вкладки(Головний файл), або 'all' - всі файли, 'fixed' - усі зафіксовані
+      attachFiles: "all", //, можна також встановлювати 'firstOnly' - Лише файл із першої зафіксованої вкладки(Головний файл), або 'all' - всі файли, 'fixed' - усі зафіксовані
       attachSignatures: "signatureAndStamp", // -'signatureAndStamp'Типи “Підпис” або “Печатка”, можна також встановити 'all' - усі типи цифрових підписів
     },
   };
@@ -358,4 +365,53 @@ function onTaskCommentedSendOutDoc(caseTaskComment) {
     data: methodData, // дані, що очікує зовнішня система для заданого методу
     executeAsync: true, // виконувати завдання асинхронно
   };
+}
+
+function onChangeStructureDepart() {
+  debugger;
+  var StructureDepart = EdocsApi.getAttributeValue("StructureDepart").value;
+  if (StructureDepart) {
+    var data = EdocsApi.findElementByProperty(
+      "id",
+      StructureDepart,
+      EdocsApi.getDictionaryData("Commission")
+    ).code; //беремо значення із довідника "StructureDepart" та шукаємо значення в довіднику "Commission"
+    setEmployees(data);
+  }
+}
+function setEmployees(data) {
+  debugger;
+  if (data) {
+    const array = data.split(", ");
+    var employeeText = null;
+    var employee = [];
+    for (let index = 0; index < array.length; index++) {
+      var employeeById = EdocsApi.getEmployeeDataByEmployeeID(array[index]);
+      if (employeeById) {
+        employee.push({
+          id: 0,
+          employeeId: employeeById.employeeId,
+          index: index,
+          employeeName: employeeById.shortName,
+          positionName: employeeById.positionName,
+        });
+
+        employeeText
+          ? (employeeText =
+              employeeText +
+              "\n" +
+              employeeById.positionName +
+              "\t" +
+              employeeById.shortName)
+          : (employeeText =
+              employeeById.positionName + "\t" + employeeById.shortName);
+        employeesValue = `[{"id":0,"employeeId":"${employeeById.employeeId}","index":0,"employeeName":"${employeeById.shortName}","positionName":"${employeeById.positionName}"}]`;
+      }
+    }
+    EdocsApi.setAttributeValue({
+      code: "VisaHolder",
+      value: JSON.stringify(employee),
+      text: employeeText,
+    });
+  }
 }
